@@ -4,4 +4,4 @@ Useful things for working with directories and files<br/>*Полезные шт�
 
 | Name | Description |
 | :----- | :----- |
-| **compare.py** | Comparison of catalogs and output to the display and in `log.txt` differences.<br/>*Сравнение каталогов и вывод на дисплей и в `log.txt` различий.* |
+| **compare.py** | Recursive comparison of two directories to full depth and output to the display and in `log.txt` differences.<br/>*Рекурсивное сравнение двух каталогов на полную глубину и вывод на дисплей и в `log.txt` различий.* |

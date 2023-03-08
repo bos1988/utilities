@@ -1,8 +1,19 @@
 import filecmp
 
  
-def report_partial(dcmp): # Print a report on the differences between a and b
-    # Output format is purposely lousy
+def report_partial(dcmp):
+    """Report on the differences between dir1 and dir2
+
+Parameters
+----------
+dcmp: filecmp.dircmp
+    The dircmp object
+
+Returns
+-------
+res: str
+    Comparison result between dir1 and dir1.
+"""
     flags = [
         bool(dcmp.left_only),
         bool(dcmp.right_only),
@@ -10,17 +21,17 @@ def report_partial(dcmp): # Print a report on the differences between a and b
         bool(dcmp.funny_files),
         bool(dcmp.common_funny)
     ]
-    res = ''
+    result = ''
     if any(flags):
-        res += '-'*50 + '\n'
-        res += f'''<<<    {dcmp.left}
+        result += '-' * 50 + '\n'
+        result += f'''<<<    {dcmp.left}
 >>>    {dcmp.right}
 
 '''
     if dcmp.left_only:
         dcmp.left_only.sort()
         lst = "\n      ".join(dcmp.left_only)
-        res += f'''  Only in <<< {dcmp.left} :
+        result += f'''  Only in <<< {dcmp.left} :
 
       {lst}
 
@@ -28,7 +39,7 @@ def report_partial(dcmp): # Print a report on the differences between a and b
     if dcmp.right_only:
         dcmp.right_only.sort()
         lst = "\n      ".join(dcmp.right_only)
-        res += f'''  Only in >>> {dcmp.right} :
+        result += f'''  Only in >>> {dcmp.right} :
 
       {lst}
 
@@ -39,7 +50,7 @@ def report_partial(dcmp): # Print a report on the differences between a and b
     if dcmp.diff_files:
         dcmp.diff_files.sort()
         lst = "\n      ".join(dcmp.diff_files)
-        res += f'''  Differing files :
+        result += f'''  Differing files :
 
       {lst}
 
@@ -47,7 +58,7 @@ def report_partial(dcmp): # Print a report on the differences between a and b
     if dcmp.funny_files:
         dcmp.funny_files.sort()
         lst = "\n      ".join(dcmp.funny_files)
-        res += f'''  Trouble with common files :
+        result += f'''  Trouble with common files :
 
       {lst}
 
@@ -58,17 +69,27 @@ def report_partial(dcmp): # Print a report on the differences between a and b
     if dcmp.common_funny:
         dcmp.common_funny.sort()
         lst = "\n      ".join(dcmp.common_funny)
-        res += f'''  Common funny cases :
+        result += f'''  Common funny cases :
 
       {lst}
 
 '''
+    return result
 
-    return res
 
+def report_diff(dcmp):
+    """Report on self and subdirs recursively
 
-def report_diff(dcmp): # Report on self and subdirs recursively
-#     dcmp.report()
+Parameters
+----------
+dcmp: filecmp.dircmp
+    The dircmp object
+
+Returns
+-------
+res: str
+    Comparison result between dir1 and dir1 and common subdirectories (recursively).
+"""
     result = report_partial(dcmp)
     for sd in dcmp.subdirs.values():
         result += report_diff(sd)
@@ -76,16 +97,15 @@ def report_diff(dcmp): # Report on self and subdirs recursively
     return result
 
 
+if __name__ == "__main__":
+    dir1 = input('Enter LEFT  path: ')
+    dir2 = input('Enter RIGHT path: ')
 
-dir1 = input('Enter LEFT  path: ')
-dir2 = input('Enter RIGHT path: ')
+    dirs_cmp = filecmp.dircmp(dir1, dir2)
+    res = report_diff(dirs_cmp)
 
-dirs_cmp = filecmp.dircmp(dir1, dir2)
+    with open('log.txt', 'w') as f:
+        print(res, file=f)
+    print(res)
 
-res = report_diff(dirs_cmp)
-with open('log.txt', 'w') as f:
-    print(res, file=f)
-print(res)
-
-
-input('Press Enter to exit')
+    input('Press Enter to exit')
