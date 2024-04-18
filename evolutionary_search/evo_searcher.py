@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*
+# -*- coding: utf-8 -*-
+from itertools import product
 from typing import Callable
 
 import numpy as np
-from itertools import product
 
 
 class EvoSearcher:
@@ -30,7 +30,7 @@ class EvoSearcher:
         if mutation_rate > 1:
             raise ValueError("mutation_rate must be between 0 and 1")
 
-        self.fitness_function = np.vectorize(fitness_function, signature='(n)->()')
+        self.fitness_function = np.vectorize(fitness_function, signature="(n)->()")
         self.number_of_genes = number_of_genes
         self.initial_population_size = initial_population_size
         self.number_of_children = number_of_children
@@ -72,10 +72,14 @@ class EvoSearcher:
 
     def reset_to_zero(self):
         self.best_fitness = np.zeros(self.number_of_best, dtype=int)
-        self.best_chromosomes = np.zeros((self.number_of_best, self.number_of_genes), dtype=int)
+        self.best_chromosomes = np.zeros(
+            (self.number_of_best, self.number_of_genes), dtype=int
+        )
 
     def generate_initial_population(self) -> None:
-        self.population = np.random.randint(2, size=(self.initial_population_size, self.number_of_genes))
+        self.population = np.random.randint(
+            2, size=(self.initial_population_size, self.number_of_genes)
+        )
         self.calculate_population_fitness()
 
     def calculate_population_fitness(self) -> None:
@@ -88,13 +92,17 @@ class EvoSearcher:
 
     def update_best(self) -> None:
         if len(self.population) != len(self.fitnesses):
-            raise ValueError("Length of 'fitnesses' is not equal to length of 'population'")
+            raise ValueError(
+                "Length of 'fitnesses' is not equal to length of 'population'"
+            )
 
-        order = np.flip(self.fitnesses.argsort())[:self.number_of_best]
+        order = np.flip(self.fitnesses.argsort())[: self.number_of_best]
         self.best_fitness = np.concatenate([self.fitnesses[order], self.best_fitness])
-        self.best_chromosomes = np.concatenate([self.population[order], self.best_chromosomes])
+        self.best_chromosomes = np.concatenate(
+            [self.population[order], self.best_chromosomes]
+        )
 
-        order_best = np.flip(self.best_fitness.argsort())[:self.number_of_best]
+        order_best = np.flip(self.best_fitness.argsort())[: self.number_of_best]
         self.best_fitness = self.best_fitness[order_best]
         self.best_chromosomes = self.best_chromosomes[order_best]
 
@@ -108,7 +116,8 @@ class EvoSearcher:
             len_population,
             size=self.number_of_children,
             replace=self.repeat_parents,
-            p=self.fitnesses.argsort().argsort()**2 / sum(np.arange(len_population)**2),
+            p=self.fitnesses.argsort().argsort() ** 2
+            / sum(np.arange(len_population) ** 2),
         )
         # print(f"DEBUG: selected parents {parents_indexes} from {self.fitnesses.argsort()} (right - best)")
         return self.population[parents_indexes]
@@ -124,7 +133,9 @@ class EvoSearcher:
             )
         return np.vstack(children)
 
-    def crossover(self, parent_a: np.ndarray, parent_b: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    def crossover(
+        self, parent_a: np.ndarray, parent_b: np.ndarray
+    ) -> tuple[np.ndarray, np.ndarray]:
         # Implemented "Uniform crossover"
         # (there is also "Single-point crossover" and "Two-point crossover")
         # TODO add factory class Crossover
@@ -139,7 +150,11 @@ class EvoSearcher:
         return child_a, child_b
 
     def mutate_children(self, children: np.ndarray) -> np.ndarray:
-        return np.where(np.random.random(children.shape) < self.mutation_rate, 1-children, children)
+        return np.where(
+            np.random.random(children.shape) < self.mutation_rate,
+            1 - children,
+            children,
+        )
 
     def update_generation(self, children):
         children_fitness = self.fitness_function(children)
@@ -147,9 +162,8 @@ class EvoSearcher:
         self.fitnesses = np.concatenate([self.fitnesses, children_fitness])
 
         self.sort_population()
-        self.population = self.population[:self.initial_population_size]
-        self.fitnesses = self.fitnesses[:self.initial_population_size]
-
+        self.population = self.population[: self.initial_population_size]
+        self.fitnesses = self.fitnesses[: self.initial_population_size]
 
     def run_brute_force(self) -> tuple[np.ndarray, np.ndarray]:
         """
@@ -164,4 +178,7 @@ class EvoSearcher:
         self.calculate_population_fitness()
         self.sort_population()
 
-        return self.fitnesses[:self.number_of_best], self.population[:self.number_of_best]
+        return (
+            self.fitnesses[: self.number_of_best],
+            self.population[: self.number_of_best],
+        )

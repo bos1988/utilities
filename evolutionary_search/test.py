@@ -1,14 +1,16 @@
+# -*- coding: utf-8 -*-
 from time import perf_counter
 
-from evo_sercher import EvoSearcher
+from evo_searcher import EvoSearcher
 
 
 # --------------------------------------------------
 
+
 def fitness_function1(a):
     if sum(a) > len(a) * 0.6:
         return 0
-    return sum([i*elem for i, elem in enumerate(a, 1)])
+    return sum([i * elem for i, elem in enumerate(a, 1)])
 
 
 def fitness_function2(a):
@@ -23,7 +25,7 @@ def fitness_function2(a):
     return result
 
 
-NUMBER_OF_GENES = 20 # 20
+NUMBER_OF_GENES = 20  # 20
 INITIAL_POPULATION_SIZE = 1000
 NUMBER_OF_CHILDREN = 800
 MUTATION_RATE = 0.1
@@ -67,7 +69,7 @@ if __name__ == "__main__":
     # print(f"brute_force_result:\n{brute_force_result[1]}")
     # print(f"Execution time = {t_res:.6f} sec")
 
-    print("="*20, end="\n\n")
+    print("=" * 20, end="\n\n")
 
     t_0 = perf_counter()
     test_result = searcher2.run(50)
@@ -76,6 +78,5 @@ if __name__ == "__main__":
     print(f"test_result:\n{test_result[0]}")
     print(f"test_result:\n{test_result[1]}")
     print(f"Execution time = {t_res:.6f} sec")
-
 
     print()

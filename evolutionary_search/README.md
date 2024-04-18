@@ -4,4 +4,4 @@ Evolutionary smart search algorithm<br/>*Эволюционный алгорит
 
 | Name | Description |
 | :----- | :----- |
-| **evo_sercher.py** | A class of an Evolutionary smart search algorithm.<br/>*Класс Эволюционного алгоритма умного поиска.* |
+| **evo_searcher.py** | A class of an Evolutionary smart search algorithm.<br/>*Класс Эволюционного алгоритма умного поиска.* |
