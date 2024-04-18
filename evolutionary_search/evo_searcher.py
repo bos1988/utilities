@@ -50,6 +50,8 @@ class EvoSearcher:
         self.reset_to_zero()
         self.fitnesses = np.empty(0)
         self.population = np.empty(0)
+        self.best_fitness = np.zeros(number_of_best)
+        self.best_chromosomes = np.zeros((number_of_best, number_of_genes))
 
     def run(self, number_of_generations: int = 0) -> tuple[np.ndarray, np.ndarray]:
         self.reset_to_zero()
