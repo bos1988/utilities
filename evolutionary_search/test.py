@@ -26,6 +26,7 @@ def fitness_function2(a):
 
 
 NUMBER_OF_GENES = 20  # 20
+POSITIVE_SAMPLE_SIZE = int(NUMBER_OF_GENES / 2)
 INITIAL_POPULATION_SIZE = 1000
 NUMBER_OF_CHILDREN = 800
 MUTATION_RATE = 0.1
@@ -34,7 +35,8 @@ NUMBER_OF_BEST = 10
 searcher1 = EvoSearcher(
     fitness_function1,
     NUMBER_OF_GENES,
-    INITIAL_POPULATION_SIZE,
+    positive_sample_size=POSITIVE_SAMPLE_SIZE,
+    initial_population_size=INITIAL_POPULATION_SIZE,
     number_of_children=NUMBER_OF_CHILDREN,
     repeat_parents=False,
     mutation_rate=MUTATION_RATE,
@@ -43,7 +45,8 @@ searcher1 = EvoSearcher(
 searcher2 = EvoSearcher(
     fitness_function2,
     NUMBER_OF_GENES,
-    INITIAL_POPULATION_SIZE,
+    positive_sample_size=POSITIVE_SAMPLE_SIZE,
+    initial_population_size=INITIAL_POPULATION_SIZE,
     number_of_children=NUMBER_OF_CHILDREN,
     repeat_parents=False,
     mutation_rate=MUTATION_RATE,
@@ -72,6 +75,7 @@ if __name__ == "__main__":
     print("=" * 20, end="\n\n")
 
     t_0 = perf_counter()
+    # test_result = searcher1.run(50)
     test_result = searcher2.run(50)
     t_res = perf_counter() - t_0
     print("\n--------------------------------------------------")
