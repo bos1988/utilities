@@ -1,4 +1,4 @@
-# Evolutionary algorithm
+# System monitor
 
 A python system monitor showing RAM and CPU consumption.<br/>*Системный монитор на python показывающий потребление RAM и CPU.*
 
